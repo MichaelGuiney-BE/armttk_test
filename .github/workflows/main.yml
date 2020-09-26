@@ -26,7 +26,7 @@ jobs:
         id: pathtest
         uses: aliencube/arm-ttk-actions@v0.3
         with:
-          path: ./resources
+          path: ./deployment.json
 
       - name: Test result - path
         shell: bash
