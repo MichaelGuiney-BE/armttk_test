@@ -12,5 +12,5 @@ pool:
 steps:
 - task: AzSKARMTemplateChecker@4
   inputs:
-    ARMTemplateFilePath: '$(System.DefaultWorkingDirectory)/deployment.json'
+    ARMTemplateFilePath: '$(System.DefaultWorkingDirectory)/azureautomation-packs/azuredeploy.json'
     Recurse: false
