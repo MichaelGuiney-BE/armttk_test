@@ -82,6 +82,12 @@
           "kubernetesVersion": "[parameters('aksVersion')]",
           "enableRBAC": true,
           "dnsPrefix": "[variables('aks_name')]",
+		  "aadProfile": {
+            "clientAppID": "[parameters('AAD_ClientAppID')]",
+            "serverAppID": "[parameters('AAD_ServerAppID')]",
+            "tenantID": "[parameters('AAD_TenantID')]",
+            "serverAppSecret": "[parameters('AAD_ServerAppSecret')]"
+          },
           "addonProfiles": {
             "httpApplicationRouting": {
               "enabled": true
@@ -121,6 +127,9 @@
         "name": "[variables('function_name')]",
         "apiVersion": "2018-11-01",
         "location": "[resourceGroup().location]",
+		"identity": {
+          "type": "SystemAssigned"
+		},
         "properties": {
           "name": "[variables('function_name')]",
           "siteConfig": {
@@ -155,17 +164,18 @@
 		  "detailedErrorLoggingEnabled" : true,	
 		  "netFrameworkVersion" : "v4.7",	
 		  "httpsOnly": true,
-		  "siteAuthEnabled " : true,
-		  "siteAuthSettings" : [
-			  {
-			    "name": "clientId",
-				"value" : "clientid_non_null_string"
-			  }
-			],
+		  "siteAuthEnabled" : true,
+		  "siteAuthSettings" : {
+			  "enabled": true,
+		      "clientId" : "web-aad-client-id"
+		  },
 		  "minTlsVersion" : "1.2",
 		  "alwaysOn": true,
           "reserved": false
         },
+		"sku": {
+		  "capacity" : "2",
+		},
         "dependsOn": [
           "[resourceId('Microsoft.Storage/storageAccounts', variables('storage_name'))]"
         ]
@@ -195,7 +205,9 @@
           ],
           "enableMultipleWriteLocations": true,
           "isVirtualNetworkFilterEnabled": false,
-		  "consistencyPolicy": "[variables('consistencyPolicy')[parameters('defaultConsistencyLevel')]]",
+		  "consistencyPolicy" : {
+		    "defaultConsistencyLevel" : "Session"
+		  },
 		  "enableAutomaticFailover": true,
           "ipRangeFilter":"40.76.54.131,52.176.6.30,52.169.50.45,52.187.184.26",
           "virtualNetworkRules": [],
@@ -224,7 +236,9 @@
           ],
           "enableMultipleWriteLocations": true,
 		  "isVirtualNetworkFilterEnabled": false,
-		  "consistencyPolicy": "[variables('consistencyPolicy')[parameters('defaultConsistencyLevel')]]",
+		  "consistencyPolicy" : {
+		    "defaultConsistencyLevel" : "Session"
+		  },
 		  "enableAutomaticFailover": true,
           "ipRangeFilter":"40.76.54.131,52.176.6.30,52.169.50.45,52.187.184.26",
           "virtualNetworkRules": [],
