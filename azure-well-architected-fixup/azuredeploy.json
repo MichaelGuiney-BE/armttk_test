@@ -41,7 +41,7 @@
         }
       },
       {
-        "type": "Microsoft.ContainerRegistry/registries",
+        "type": "Microsoft.ContainerRegistry/registries/webhooks",
         "sku": {
           "name": "Standard"
         },
@@ -49,7 +49,12 @@
         "apiVersion": "2017-10-01",
         "location": "[resourceGroup().location]",
         "properties": {
-          "adminUserEnabled": true
+          "adminUserEnabled": false,
+		  "policies" : {
+			"trustPolicy" : {
+			  "status" : "enabled"
+			}
+		  }
         }
       },
       {
@@ -63,7 +68,7 @@
         "location": "[resourceGroup().location]",
         "properties": {
           "accessTier": "Hot",
-          "supportsHttpsTrafficOnly": false
+          "supportsHttpsTrafficOnly": true
         },
         "dependsOn": []
       },
@@ -143,11 +148,22 @@
             ]
           },
           "clientAffinityEnabled": false,
-		  "remoteDebuggingEnabled": false,
+		  "remoteDebuggingEnabled": false,		  
+		  "webSocketsEnabled": false,
 		  "httpLoggingEnabled": true,
 		  "requestTracingEnabled" : true,
-		  "detailedErrorLoggingEnabled" : true,		  
+		  "detailedErrorLoggingEnabled" : true,	
+		  "netFrameworkVersion" : "v4.7",	
 		  "httpsOnly": true,
+		  "siteAuthEnabled " : true,
+		  "siteAuthSettings" : [
+			  {
+			    "name": "clientId",
+				"value" : "clientid_non_null_string"
+			  }
+			],
+		  "minTlsVersion" : "1.2",
+		  "alwaysOn": true,
           "reserved": false
         },
         "dependsOn": [
@@ -170,10 +186,18 @@
               "id": "[concat(variables('shopping_cosmosdb_name'), '-', resourceGroup().location)]",
               "failoverPriority": 0,
               "locationName": "[resourceGroup().location]"
+            },
+			{
+              "id": "[concat(variables('shopping_cosmosdb_name'), '-', resourceGroup().location)]",
+              "failoverPriority": 0,
+              "locationName": "[resourceGroup().location]"
             }
           ],
           "enableMultipleWriteLocations": true,
           "isVirtualNetworkFilterEnabled": false,
+		  "consistencyPolicy": "[variables('consistencyPolicy')[parameters('defaultConsistencyLevel')]]",
+		  "enableAutomaticFailover": true,
+          "ipRangeFilter":"40.76.54.131,52.176.6.30,52.169.50.45,52.187.184.26",
           "virtualNetworkRules": [],
           "dependsOn": []
         }
@@ -191,10 +215,18 @@
               "id": "[concat(variables('coupons_cosmosdb_name'), '-', resourceGroup().location)]",
               "failoverPriority": 0,
               "locationName": "[resourceGroup().location]"
+            },
+			{
+              "id": "[concat(variables('coupons_cosmosdb_name'), '-', resourceGroup().location)]",
+              "failoverPriority": 0,
+              "locationName": "[resourceGroup().location]"
             }
           ],
           "enableMultipleWriteLocations": true,
-          "isVirtualNetworkFilterEnabled": false,
+		  "isVirtualNetworkFilterEnabled": false,
+		  "consistencyPolicy": "[variables('consistencyPolicy')[parameters('defaultConsistencyLevel')]]",
+		  "enableAutomaticFailover": true,
+          "ipRangeFilter":"40.76.54.131,52.176.6.30,52.169.50.45,52.187.184.26",
           "virtualNetworkRules": [],
           "dependsOn": []
         },
