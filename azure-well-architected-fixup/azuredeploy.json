@@ -68,6 +68,9 @@
         "location": "[resourceGroup().location]",
         "properties": {
           "accessTier": "Hot",
+		  "deleteRetentionPolicy": {
+             "enabled": true
+          },
           "supportsHttpsTrafficOnly": true
         },
         "dependsOn": []
