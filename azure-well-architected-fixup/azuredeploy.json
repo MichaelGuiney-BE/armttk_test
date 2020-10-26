@@ -177,7 +177,7 @@
           "reserved": false
         },
 		"sku": {
-		  "capacity" : "2",
+		  "capacity" : "2"
 		},
         "dependsOn": [
           "[resourceId('Microsoft.Storage/storageAccounts', variables('storage_name'))]"
