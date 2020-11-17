@@ -12,5 +12,5 @@ pool:
 steps:
 - task: AzSKARMTemplateChecker@4
   inputs:
-    ARMTemplateFilePath: '$(System.DefaultWorkingDirectory)/azure-well-architected-fixup/azuredeploy.json'
-    Recurse: false
+    ARMTemplateFilePath: '$(System.DefaultWorkingDirectory)/ARM_combined'
+    Recurse: true
