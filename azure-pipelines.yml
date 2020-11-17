@@ -13,4 +13,4 @@ steps:
 - task: AzSKARMTemplateChecker@4
   inputs:
     ARMTemplateFilePath: '$(System.DefaultWorkingDirectory)/ARM_combined'
-    Recurse: true
+    DisableAutoUpdate: true
